@@ -4,7 +4,7 @@ import { Box, Stack, Typography } from "@mui/material";
 
 import { exerciseOptions, fetchData } from "../utils/fetchData";
 import ExerciseCard from "./ExerciseCard";
-import Loader from "./Loader";
+import ErrorAPI from "./ErrorAPI";
 
 const Exercises = ({ exercises, setExercises, bodyPart }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -25,8 +25,8 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
           exerciseOptions
         );
       }
-
-      setExercises(exercisesData);
+      if (!exercisesData) return;
+      else setExercises(exercisesData);
     };
 
     fetchExercisesData();
@@ -46,7 +46,7 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
     window.scrollTo({ top: 1800, behavior: "smooth" });
   };
 
-  if (!currentExercises.length) return <Loader />;
+  if (!currentExercises.length) return <ErrorAPI />;
 
   return (
     <Box mt="120px">

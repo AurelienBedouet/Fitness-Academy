@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { exerciseOptions, fetchData } from "../utils/fetchData";
 import HorizontalScrollbar from "./HorizontalScrollbar";
+import ErrorAPI from "./ErrorAPI";
 
 const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
   const [search, setSearch] = useState("");
@@ -13,8 +14,9 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
         "https://exercisedb.p.rapidapi.com/exercises/bodyPartList",
         exerciseOptions
       );
-
-      setBodyParts(["all", ...bodyPartsData]);
+      console.log(bodyPartsData);
+      if (!bodyPartsData) return;
+      else setBodyParts(["all", ...bodyPartsData]);
     };
 
     fetchExercisesData();
@@ -26,21 +28,25 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
         "https://exercisedb.p.rapidapi.com/exercises",
         exerciseOptions
       );
+      if (!exercisesData) return;
+      else {
+        const searchedExercises = exercisesData.filter(
+          item =>
+            item.name.toLowerCase().includes(search) ||
+            item.target.toLowerCase().includes(search) ||
+            item.equipment.toLowerCase().includes(search) ||
+            item.bodyPart.toLowerCase().includes(search)
+        );
 
-      const searchedExercises = exercisesData.filter(
-        item =>
-          item.name.toLowerCase().includes(search) ||
-          item.target.toLowerCase().includes(search) ||
-          item.equipment.toLowerCase().includes(search) ||
-          item.bodyPart.toLowerCase().includes(search)
-      );
+        window.scrollTo({ top: 1250, left: 100, behavior: "smooth" });
 
-      window.scrollTo({ top: 1250, left: 100, behavior: "smooth" });
-
-      setSearch("");
-      setExercises(searchedExercises);
+        setSearch("");
+        setExercises(searchedExercises);
+      }
     }
   };
+
+  if (!bodyParts.length) return <ErrorAPI />;
 
   return (
     <Box sx={{ mt: { lg: "200px", xs: "80px" } }}>
