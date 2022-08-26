@@ -1,4 +1,4 @@
-# Fitness Academy | React JS / Material UI v5 / RapidAPI
+# Fitness Academy | React JS - Material UI v5 - RapidAPI
 
 Fitness Academy is a React Js App allowing you to search for thousands exercises filtered by body parts, equipement or target muscles. 
 It also renders dynamically on each exercise detail page a selection of youtube videos showing how to do the exercise.
